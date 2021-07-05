@@ -36,7 +36,7 @@ class ZZController extends AbstractController
         $variables = [];
         $processes = $commonGroundService->getResourceList(['component' => 'ptc', 'type' => 'process_types'])['hydra:member'];
         foreach ($processes as $process) {
-            if ($process['name'] == 'Aanvragen begrafenis') {
+            if ($process['name'] == 'Verhuizen') {
                 $variables['process'] = $process;
             }
         }

@@ -1,6 +1,6 @@
-# begrafenisplanner chart
+# verhuizen-interface chart
 
-The Helm chart installs begrafenisplanner and by default the following dependencies using subcharts:
+The Helm chart installs verhuizen-interface and by default the following dependencies using subcharts:
 
 - [PostgreSQL](https://github.com/bitnami/charts/tree/master/bitnami/postgresql)
 - [Redis](https://github.com/bitnami/charts/tree/master/bitnami/redis)
@@ -10,14 +10,14 @@ The Helm chart installs begrafenisplanner and by default the following dependenc
 First configure the Helm repository:
 
 ```bash
-helm repo add begrafenisplanner https://raw.githubusercontent.com/ConductionNL/begrafenisplanner/master/api/helm/
+helm repo add verhuizen-interface https://raw.githubusercontent.com/ConductionNL/verhuizen-interface/master/api/helm/
 helm repo update
 ```
 
 Install the Helm chart with:
 
 ```bash
-helm install my-begrafenisplanner ConductionNL/begrafenisplanner --version 0.1.0
+helm install my-verhuizen-interface ConductionNL/verhuizen-interface --version 0.1.0
 ```
 
 :warning: The default settings are unsafe for production usage. Configure proper secrets, enable persistence and consider High Availability (HA) for the database and the application.
@@ -27,8 +27,8 @@ helm install my-begrafenisplanner ConductionNL/begrafenisplanner --version 0.1.0
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `settings.domain` | The domain (if any) that you want to deploy to | `conduction.nl` |
-| `settings.subdomain` | the subdomain of the installation excluding www. | `begrafenisplanner` |
-| `settings.subpath` | Any sub path to follow the domain, like /api/v1 | `begrafenisplanner` |
+| `settings.subdomain` | the subdomain of the installation excluding www. | `verhuizen-interface` |
+| `settings.subpath` | Any sub path to follow the domain, like /api/v1 | `verhuizen-interface` |
 | `settings.subpathRouting` | Whether to actually use te sub path | false |
 | `settings.env` | Either prod or dev, determines settings like error tracing | `dev` |
 | `settings.web` | Whether tot start an ingress in way | false |

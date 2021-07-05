@@ -3,7 +3,7 @@ annotations:
 apiVersion: v2
 appVersion: V1.0
 description: 'De Proto Applicatie levert een vooringerichte versie van het Symfony PHP framework, waarbij de NL Design System componenten zijn voorzien van template widgets. Oftewel het is mogelijk om vanuit je PHP/HTML templates direct gebruik te maken van NL Design Elementen. De business logica van de Proto Applicatie wordt geleverd door de generieke Common Ground Bundle.'
-name: begrafenisplanner
+name: verhuizen-interface
 version: 1.0.0
 home: https://www.conduction.nl
 icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
