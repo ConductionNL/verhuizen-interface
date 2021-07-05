@@ -188,12 +188,6 @@ class PtcController extends AbstractController
             // We only support the posting and saving of
             if ($this->getUser() || in_array($request['status'], ['submitted'])) {
 
-                $orgs = $commonGroundService->getResourceList(['component' => 'wrc', 'type' => 'organizations'])['hydra:member'];
-                foreach ($orgs as $org) {
-                    if ($org['rsin'] == '999990482') {
-                        $request['organization'] = $org['@id'];
-                    }
-                }
                 $request = $commonGroundService->saveResource($request, ['component' => 'vrc', 'type' => 'requests']);
             }
 
