@@ -22,7 +22,7 @@ security:
       brp:
           auth: apikey
           location: brpservice.local
-          apiKey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+          apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
       bc:
           auth: apikey
           location: betaalservice.local
@@ -62,7 +62,7 @@ security:
       kvk:
           auth: apikey
           location: kvkservice.local
-          apiKey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+          apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
       lc:
           auth: apikey
           location: locatiecatalogus.local
