@@ -19,6 +19,10 @@ security:
           auth: apikey
           location: agendaservice.local
           apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+      as:
+          auth: apikey
+          location: adresservice.local
+          apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
       brp:
           auth: apikey
           location: brpservice.local
