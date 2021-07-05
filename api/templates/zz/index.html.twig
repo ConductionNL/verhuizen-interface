@@ -1,0 +1,43 @@
+{% extends "content.html.twig" %}
+
+{% block content %}
+
+</div>
+
+<div class="content-background">
+    <div class="row content-background headerImage">
+        <img src="{{ asset('images/westfrieslandheader.jfif')  }}" alt="Westfriesland landschap" height="500px" />
+        </div>
+    <div class="content container" style="text-align: center">
+
+            <h3>Welkom, op deze website kunt u een uitvaart plannen in de regio West-Friesland.</h3>
+
+        </div>
+    </div>
+
+    {% if process|default %}
+    <div class="container" style="margin-top: 20px">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="list list--card">
+                            <li></li>
+                            <li class="card background--primary card__hover">
+                                <a href="{{ path('app_ptc_process_stage',{"id":process.id}) }}" class="card__content">
+                                    <div class="card__icon flex-center color--primary"><i class="fas fa-monument fa-4x"></i></div>
+                                    <div class="card__body flex-center"><span class="card__title color--primary flex-center">Aanvragen Begrafenis</span></div>
+                                </a>
+                            </li>
+                            <li></li>
+                        </ul>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.col -->
+            <div class="col-md-4"></div>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+    {% endif %}
+
+{% endblock %}

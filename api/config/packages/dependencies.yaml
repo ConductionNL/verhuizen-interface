@@ -1,0 +1,99 @@
+parameters:
+    components:
+        arc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/arc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        brp:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/brp
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        bc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/bc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        bs:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/bs
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        cc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/cc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        digispoof-interface:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/digispoof-interface
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        ds:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/digispoof
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        eh:
+            auth: apikey
+            location: https://huwelijksplannernew-conduction.commonground.nu/eherkenning
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        grc:
+            auth: apikey
+            location: https://huwelijksplannernew-conduction.commonground.nu/api/v1/grc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        ias:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/ias
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        irc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/irc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        kvk:
+            auth: apikey
+            location: https://huwelijksplannernew-conduction.commonground.nu/api/v1/kvk
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        lc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/lc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        ltc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/ltc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        mrc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/mrc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        memo:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/memo
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        orc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/orc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        pdc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/pdc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        ptc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/ptc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        ts:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/ts
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        uc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/uc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        vrc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/vrc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        vtc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/vtc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+        wrc:
+            auth: apikey
+            location: https://dev.zuid-drecht.nl/api/v1/wrc
+            apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
+            

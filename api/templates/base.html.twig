@@ -1,0 +1,836 @@
+{# {% set application = commonground_application() %} #}
+
+{#{% set orgs = commonground_resource_list({'component':'wrc','type':'organizations'})['hydra:member'] %}#}
+{#{% set organization = null %}#}
+{#{% for org in orgs %}#}
+{#    {% if org['rsin'] == '999990482' %}#}
+{#        {% set organization = org %}#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+<!DOCTYPE html>
+<html lang="nl-NL">
+<head>
+
+    {% if application['defaultConfiguration']['configuration']['googleTagId'] is defined and application['defaultConfiguration']['configuration']['googleTagId'] is not empty %}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async
+                src="https://www.googletagmanager.com/gtag/js?id={{ application['defaultConfiguration']['configuration']['googleTagId'] }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', '{{ application['defaultConfiguration']['configuration']['googleTagId'] }}');
+        </script>
+    {% endif %}
+    {% if app.user is defined and app.user is not empty and app_session_duration is defined and app_session_duration is not empty %}
+        <script>
+            setTimeout(function () {
+                window.location.href = '/login/loggedOut';
+            }, {{ (app_session_duration * 1000) + 5000 }});
+        </script>
+    {% endif %}
+
+    <meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+
+    <title>Begrafenisplanner</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    {% if application['style']['favicon']['base64'] is defined and application['style']['favicon']['base64'] is not empty %}
+        <link rel="icon" href="{{ application['style']['favicon']['base64']|raw }}">
+    {% else %}
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
+    {% endif %}
+    <link rel="stylesheet" href="/uno/core/base.css">
+    <link rel="stylesheet" href="/uno/core/grid.css">
+    <link rel="stylesheet" href="/uno/core/animations.css">
+    <link rel="stylesheet" href="/uno/components/lists/lists.css">
+    <link rel="stylesheet" href="/uno/components/header/header.css">
+    <link rel="stylesheet" href="/uno/components/collapse/collapse.css">
+    <link rel="stylesheet" href="/uno/components/navigation/breadcrumbs.css">
+    <link rel="stylesheet" href="/uno/components/navigation/backlink.css">
+    <link rel="stylesheet" href="/uno/components/navigation/sidenav.css">
+    <link rel="stylesheet" href="/uno/components/form/form.css">
+    <link rel="stylesheet" href="/uno/components/form/input.css">
+    <link rel="stylesheet" href="/uno/components/button/button.css">
+    <link rel="stylesheet" href="/uno/components/skiplink/skiplink.css">
+    <link rel="stylesheet" href="/uno/components/tabs/tabs.css">
+    <link rel="stylesheet" href="/uno/components/footer/footer.css">
+    <link rel="stylesheet" href="/uno/components/navigation/navigation.css">
+    <link rel="stylesheet" href="/uno/components/donut-chart/donut-chart.css">
+    <link rel="stylesheet" href="/uno/components/spinner/spinner.css">
+    <!--<link rel="stylesheet" href="/uno/components/memo/memo.css">-->
+    <link rel="stylesheet" href="/uno/components/modal/modal.css">
+    <link rel="stylesheet" href="/uno/components/tooltip/tooltip.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+
+    <link rel="stylesheet" href="/css/challange.css">
+    <link rel="stylesheet" href="/css/processen.css">
+
+    <link rel="stylesheet" href="/uno/components/button/button.css">
+    <link rel="stylesheet" href="/uno/components/card/card.css">
+    <link rel="stylesheet" href="/uno/components/collapse/collapse.css">
+    <link rel="stylesheet" href="/uno/components/form/checkbox.css">
+    <link rel="stylesheet" href="/uno/components/form/filter.css">
+    <link rel="stylesheet" href="/uno/components/form/form.css">
+    <link rel="stylesheet" href="/uno/components/form/file.css">
+    <link rel="stylesheet" href="/uno/components/form/input.css">
+    <link rel="stylesheet" href="/uno/components/form/radio.css">
+    <link rel="stylesheet" href="/uno/components/hint/hint.css">
+    <link rel="stylesheet" href="/uno/components/label/label.css">
+    <link rel="stylesheet" href="/uno/components/list/definition-list.css">
+    <link rel="stylesheet" href="/uno/components/list/list-card.css">
+    <link rel="stylesheet" href="/uno/components/list/list-grid.css">
+    <link rel="stylesheet" href="/uno/components/list/list-files.css">
+    <link rel="stylesheet" href="/uno/components/list/list-notification.css">
+    <link rel="stylesheet" href="/uno/components/list/list-subject.css">
+    <link rel="stylesheet" href="/uno/components/list/list-search.css">
+    <link rel="stylesheet" href="/uno/components/list/list-timeline.css">
+    <link rel="stylesheet" href="/uno/components/list/list-filter.css">
+    <link rel="stylesheet" href="/uno/components/meta/meta.css">
+    <link rel="stylesheet" href="/uno/components/navigation/inpage.css">
+    <link rel="stylesheet" href="/uno/components/notification/notification.css">
+    <link rel="stylesheet" href="/uno/components/pagination/pagination.css">
+    <link rel="stylesheet" href="/uno/components/quote/quote.css">
+    <link rel="stylesheet" href="/uno/components/section/edit-section.css">
+    <link rel="stylesheet" href="/uno/components/section/inner-section.css">
+    <link rel="stylesheet" href="/uno/components/table/table.css">
+
+    {# Image Slider #}
+    <link rel="stylesheet" type="text/css" href="/slick/slick.css"/>
+    {# Add the new slick-theme.css if you want the default styling #}
+    <link rel="stylesheet" type="text/css" href="/slick/slick-theme.css"/>
+
+    <!-- Default GEM widget styling -->
+    <link rel="stylesheet" href="https://www.develop.virtuele-gemeente-assistent.nl/static/css/widget-v0.11.7.css"
+          type="text/css">
+
+    <script src="/uno/vendor/js/Promise.min.js"></script>
+    <script src="/uno/vendor/js/system.js"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvjuY_QquUy3abazKUJJEMh8DFvpKKRBI&callback=initMap"></script>
+    <script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
+    <script
+        src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+        crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/be1c31fb58.js" crossorigin="anonymous"></script>
+    <!--<script src="/uno/components/memo/memo.js"></script>-->
+    <script src="/uno/components/tooltip/tooltip.js"></script>
+
+    {# Google fonts #}
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+
+    {# Slick image slider #}
+    <script type="text/javascript" src="/slick/slick.min.js"></script>
+
+    <script>
+        System.config({
+            packages: {
+                '/': {
+                    defaultExtension: 'js'
+                }
+            }
+        });
+    </script>
+
+    {# QR Code #}
+    <script src="/js/html5-qrcode.min.js"></script>
+
+    <style>
+        /* default values for root variables */
+        :root {
+            --color: #2b2b2b;
+            --background: #DEDEDE;
+            --primary: #0047BB;
+            --primary-color: white;
+            --secondary: #0047BB;
+            --secondary-color: #0047BB;
+
+            --header: white;
+            --menu: #0047BB;
+            --menu-over: #3669A5;
+            --menu-color: white;
+            --footer: #0047BB;
+            --footer-color: white;
+        }
+
+        /* general overwrites and addons to nl-design system */
+
+        .nav--input {
+            margin-top: 10px;
+            margin-bottom: 10px !important;
+        }
+
+        .nav--input__control-group {
+            width: 200px;
+        }
+
+        {# Navigation position control #}
+        .nav-position {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            order: 2;
+        }
+
+        .nav-image {
+            order: 1;
+        }
+
+        @media only screen and (max-width: 550px) {
+            .nav-position {
+                width: fit-content;
+                display: flex;
+                justify-content: flex-start;
+                order: 1;
+            }
+
+            .nav-image {
+                order: 2;
+            }
+        }
+
+
+        .header-logo a:before {
+            background: url("data:image/svg+xml;base64,PHN2ZyBpZD0iw5HDq8Ouw6lfMSIgZGF0YS1uYW1lPSLDkcOrw67DqSAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MzkuNTcgMTA5OC44OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNjMDA7fS5jbHMtMntmaWxsOiMzNjY5YTU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT56dWlkIERyZWNodCBOb3BheW9mZjwvdGl0bGU+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTc2LDk2Ny4xMWMtNTYsNDEuMzktMTAxLjQzLDY2LjA1LTExMSw3MS4xMWE0LDQsMCwwLDEtMy43MiwwYy0yNS41Ny0xMy41LTMwNy40OC0xNjctMzYxLjM3LTQwNmE0LDQsMCwwLDEsNy4zOC0yLjgxYzM4LjU0LDY4LjkzLDEyNS4zNywxMTkuMjYsMTg3LjUxLDE1Mi42OSw1Mi41LDI4LjIzLDExMy42Miw1MC4yMSwxNjguMzQsODAuMzZDNTA4LjIyLDg4Ny4yOSw1NDksOTE3LjY5LDU3Nyw5NjEuNzVBNCw0LDAsMCwxLDU3Niw5NjcuMTFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODM0LjcxLDIxNS44NFYxMDEuNjVhOC45LDguOSwwLDAsMC04LjktOC45MWgtMjczQTE0LjU5LDE0LjU5LDAsMCwwLDUzOS40MywxMDNsLTE5LDcwLjI4YTE0LjU4LDE0LjU4LDAsMCwxLTEzLjM1LDEwLjIxSDM4M1YxNDcuMTJjMzYuODQtMS4zNCw2Mi40Mi03LjQ1LDgwLjE2LTE1LjEsMjkuNDktMTIuNzQsMzcuMzUtMjkuNzgsMzkuMzYtMzYuNDRhMi4yMiwyLjIyLDAsMCwwLTIuMTMtMi44NEgzMzQuNjFjLTMzLjg4LDAtNjcuOTEsOS4yLTg2LjA4LDQwLjEtMTkuMzgsMzIuOTQtMTguMjQsNzguMDctMTYuNDksMTE0Ljg5LDAsMC01MC02Ni4yMi00MC43Ni0xNDguODdhNS41MSw1LjUxLDAsMCwwLTUuNDgtNi4xMkgxMDAuMzJhOC43OSw4Ljc5LDAsMCwwLTguNzgsOC43OVYxMjRjNC44Niw3OS4yNiw0OS4xNCwyODguNTcsMzcxLjU4LDM4NS40QzczNSw1OTEuMDYsNzc1LjQyLDcxNi4zLDc4My4zMiw3MzguMjRhMS4zOCwxLjM4LDAsMCwwLDIuNTMuMTdjNzUuMy0xNDMuOS04MS40OS0yNDcuNTItODEuNDktMjQ3LjUyLDMxLjMzLDAsNzkuMjMsMTcuOTQsMTE4LDM5Ljc5YTguMjgsOC4yOCwwLDAsMCwxMi4zNy03LjIxVjM2My44M2ExNC42LDE0LjYsMCwwLDAtMTguMTUtMTQuMTdjLTEzLjUsMy4zOS0zMCw2LjY4LTMyLjg3LDcuMjMtMzkuNDYsNy43Ny04NC43NSwxMS4xNS0xMjItOC43M3MtNDcuMjYtNjYuMjctMTguMzMtOTguMjNjMjUuMy0yOCw2NS41My0zNy41LDEwMi4yOS0zNSwyMy41NiwxLjYyLDU1LjE4LDcuNTksNzMuNzEsMTIuNjNBMTIuMTYsMTIuMTYsMCwwLDAsODM0LjcxLDIxNS44NFoiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NTQuODcsOTAxLjVhNCw0LDAsMCwxLTYtLjExYy0xMy41Ni0xNi4yNS03NS40Ni04Ni0xODUuNzMtMTQ2LjQyQTc1Ni40NCw3NTYuNDQsMCwwLDAsMzgzLDcxN2MtMTczLjUzLTcwLjE3LTI4Mi42OS0xNDMuMy0yOTEuNDItMzM4LjF2LTYuMjJhNCw0LDAsMCwxLDcuMjEtMi4zNGM2My42MSw4NywxNDQuNjksMTM3LjksMjQzLjE2LDE4Ni43Nyw0MC4yOCwyMCw4MS4xNywzNi4zMiwxMjEuMjEsNTMuMjUsNjYuMTUsMjgsMTMwLDU3LjU0LDE4NC43MywxMDcuOCwxNi4xOCwxNC44NSwyOS4wOSwyOS4xNSwzNi44MSw1MEM2OTUuNzUsNzk4LjEzLDcwMi41NSw4NDkuMTcsNjU0Ljg3LDkwMS41WiIvPjwvc3ZnPg==") no-repeat bottom;
+            background-size: 120%;
+        }
+
+        .header-logo a:before {
+            background: url("data:image/svg+xml;base64,PHN2ZyBpZD0iw5HDq8Ouw6lfMSIgZGF0YS1uYW1lPSLDkcOrw67DqSAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MzkuNTcgMTA5OC44OSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiNjMDA7fS5jbHMtMntmaWxsOiMzNjY5YTU7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT56dWlkIERyZWNodCBOb3BheW9mZjwvdGl0bGU+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTc2LDk2Ny4xMWMtNTYsNDEuMzktMTAxLjQzLDY2LjA1LTExMSw3MS4xMWE0LDQsMCwwLDEtMy43MiwwYy0yNS41Ny0xMy41LTMwNy40OC0xNjctMzYxLjM3LTQwNmE0LDQsMCwwLDEsNy4zOC0yLjgxYzM4LjU0LDY4LjkzLDEyNS4zNywxMTkuMjYsMTg3LjUxLDE1Mi42OSw1Mi41LDI4LjIzLDExMy42Miw1MC4yMSwxNjguMzQsODAuMzZDNTA4LjIyLDg4Ny4yOSw1NDksOTE3LjY5LDU3Nyw5NjEuNzVBNCw0LDAsMCwxLDU3Niw5NjcuMTFaIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNODM0LjcxLDIxNS44NFYxMDEuNjVhOC45LDguOSwwLDAsMC04LjktOC45MWgtMjczQTE0LjU5LDE0LjU5LDAsMCwwLDUzOS40MywxMDNsLTE5LDcwLjI4YTE0LjU4LDE0LjU4LDAsMCwxLTEzLjM1LDEwLjIxSDM4M1YxNDcuMTJjMzYuODQtMS4zNCw2Mi40Mi03LjQ1LDgwLjE2LTE1LjEsMjkuNDktMTIuNzQsMzcuMzUtMjkuNzgsMzkuMzYtMzYuNDRhMi4yMiwyLjIyLDAsMCwwLTIuMTMtMi44NEgzMzQuNjFjLTMzLjg4LDAtNjcuOTEsOS4yLTg2LjA4LDQwLjEtMTkuMzgsMzIuOTQtMTguMjQsNzguMDctMTYuNDksMTE0Ljg5LDAsMC01MC02Ni4yMi00MC43Ni0xNDguODdhNS41MSw1LjUxLDAsMCwwLTUuNDgtNi4xMkgxMDAuMzJhOC43OSw4Ljc5LDAsMCwwLTguNzgsOC43OVYxMjRjNC44Niw3OS4yNiw0OS4xNCwyODguNTcsMzcxLjU4LDM4NS40QzczNSw1OTEuMDYsNzc1LjQyLDcxNi4zLDc4My4zMiw3MzguMjRhMS4zOCwxLjM4LDAsMCwwLDIuNTMuMTdjNzUuMy0xNDMuOS04MS40OS0yNDcuNTItODEuNDktMjQ3LjUyLDMxLjMzLDAsNzkuMjMsMTcuOTQsMTE4LDM5Ljc5YTguMjgsOC4yOCwwLDAsMCwxMi4zNy03LjIxVjM2My44M2ExNC42LDE0LjYsMCwwLDAtMTguMTUtMTQuMTdjLTEzLjUsMy4zOS0zMCw2LjY4LTMyLjg3LDcuMjMtMzkuNDYsNy43Ny04NC43NSwxMS4xNS0xMjItOC43M3MtNDcuMjYtNjYuMjctMTguMzMtOTguMjNjMjUuMy0yOCw2NS41My0zNy41LDEwMi4yOS0zNSwyMy41NiwxLjYyLDU1LjE4LDcuNTksNzMuNzEsMTIuNjNBMTIuMTYsMTIuMTYsMCwwLDAsODM0LjcxLDIxNS44NFoiLz48cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02NTQuODcsOTAxLjVhNCw0LDAsMCwxLTYtLjExYy0xMy41Ni0xNi4yNS03NS40Ni04Ni0xODUuNzMtMTQ2LjQyQTc1Ni40NCw3NTYuNDQsMCwwLDAsMzgzLDcxN2MtMTczLjUzLTcwLjE3LTI4Mi42OS0xNDMuMy0yOTEuNDItMzM4LjF2LTYuMjJhNCw0LDAsMCwxLDcuMjEtMi4zNGM2My42MSw4NywxNDQuNjksMTM3LjksMjQzLjE2LDE4Ni43Nyw0MC4yOCwyMCw4MS4xNywzNi4zMiwxMjEuMjEsNTMuMjUsNjYuMTUsMjgsMTMwLDU3LjU0LDE4NC43MywxMDcuOCwxNi4xOCwxNC44NSwyOS4wOSwyOS4xNSwzNi44MSw1MEM2OTUuNzUsNzk4LjEzLDcwMi41NSw4NDkuMTcsNjU0Ljg3LDkwMS41WiIvPjwvc3ZnPg==") no-repeat bottom;
+            background-size: 120%;
+        }
+
+        .header-logo a:after {
+            background-image: none;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        :root {
+            --primary: #233A79;
+            --primary-color: white;
+            --secondary: #FFCB04;
+            --secondary-color: #263371;
+
+            --header: white;
+            --menu: #233A79;
+            --menu-over: #FFCB04;
+            --menu-color: white;
+            --footer: #233A79;
+            --footer-color: white;
+        }
+
+        .header-logo a:before {
+            margin-left: -30px;
+            background: url("data:image/svg+xml;base64,PHN2ZyBpZD0iTGFhZ18xIiBkYXRhLW5hbWU9IkxhYWcgMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgMzYzLjA5IDMyMC4zNSI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOiMyNjMzNzE7fS5jbHMtMntmaWxsOiNmZmNiMDQ7fTwvc3R5bGU+PC9kZWZzPjx0aXRsZT5sb2dvIFdlc3Rmcmllc2xhbmQgdmVjdG9yPC90aXRsZT48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0yNjUuNSw0NTIuNDNsNy0xOC40YTUuNDgsNS40OCwwLDAsMSwyLjI2LDEuMzMsNSw1LDAsMCwxLC43Mi45Myw0LjU4LDQuNTgsMCwwLDEsLjQ5LDEuMjMsNiw2LDAsMCwxLC4xNCwxLjU4LDcuNzEsNy43MSwwLDAsMS0uMzMsMmMtLjM4LDEtLjc4LDIuMTEtMS4yLDMuMjNsLTEuMjMsMy4zYy0uNCwxLjA4LS43OSwyLjExLTEuMTYsMy4xbC0xLDIuNjVjLS4zLjc4LS41NCwxLjQzLS43MywxLjk0bC0uMzcsMWMtLjQxLDEuMTEtLjgxLDIuMDgtMS4xOSwyLjlzLS43NCwxLjU0LTEuMDcsMi4xM2ExNi4xMywxNi4xMywwLDAsMS0uOTUsMS41LDgsOCwwLDAsMS0uODEsMSwyLjM0LDIuMzQsMCwwLDEtMS41Ni44NmwtNi4wNi0xNS40Ny02LjA3LDE1LjQ3YTIuMzQsMi4zNCwwLDAsMS0xLjU1LS44Niw3LjIsNy4yLDAsMCwxLS44MS0xLDE0LjI3LDE0LjI3LDAsMCwxLS45NS0xLjVjLS4zNC0uNTktLjY5LTEuMy0xLjA3LTIuMTNzLS43Ni0xLjc5LTEuMTctMi45bC0uMzctMWMtLjE5LS41MS0uNDMtMS4xNi0uNzMtMS45NHMtLjYzLTEuNjYtMS0yLjY1bC0xLjE3LTMuMXEtLjYyLTEuNjItMS4yMy0zLjNsLTEuMjEtMy4yM2E3LjcxLDcuNzEsMCwwLDEtLjMzLTIsNS41OSw1LjU5LDAsMCwxLC4xNS0xLjU4LDQuMjcsNC4yNywwLDAsMSwuNDktMS4yMyw1LjQxLDUuNDEsMCwwLDEsLjcxLS45Myw1LjU4LDUuNTgsMCwwLDEsMi4yNy0xLjMzbDcsMTguNCw3LTE2LjczWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI0MC43OSAtMTQ0LjI3KSIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTMwNC41NSw0NjQuMDZIMjgyVjQzNC40N2gyMi41MWE2LDYsMCwwLDEtLjI1LDEuODUsNC40Niw0LjQ2LDAsMCwxLS42NSwxLjM1LDQuMzcsNC4zNywwLDAsMS0uOTMuOTQsNS45LDUuOSwwLDAsMS0xLjA3LjU4LDcsNywwLDAsMS0yLjg4LjQ1SDI4Ny40OHY2LjY1aDExLjlhNi40OCw2LjQ4LDAsMCwxLS4yMSwxLjc0LDQuOTQsNC45NCwwLDAsMS0uNTgsMS4zMSw0LDQsMCwwLDEtLjguOTIsNS41LDUuNSwwLDAsMS0uOTIuNjIsNiw2LDAsMCwxLTIuNTEuNmgtNi44OHY3LjQxaDEyYTYuMyw2LjMsMCwwLDEsMS43Mi4yMiw0LjYsNC42LDAsMCwxLDEuMjguNTksMy44NCwzLjg0LDAsMCwxLC45MS44Myw1LjExLDUuMTEsMCwwLDEsLjU5LDFBNi40Myw2LjQzLDAsMCwxLDMwNC41NSw0NjQuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzE3LjQ2LDQzOS43MWEzLjU2LDMuNTYsMCwwLDAtMS4xNy4xMSwzLjc5LDMuNzksMCwwLDAtLjUuMTgsMi42NSwyLjY1LDAsMCwwLS41Mi4yOCwyLjcyLDIuNzIsMCwwLDAtLjUuNDIsMy40MiwzLjQyLDAsMCwwLS40NS41OCwzLjMzLDMuMzMsMCwwLDAtLjQ3LDEuMzQsMy40NywzLjQ3LDAsMCwwLDAsMS4wOSwzLjA2LDMuMDYsMCwwLDAsLjQyLDEsMi44OCwyLjg4LDAsMCwwLC42OC43NywzLjk0LDMuOTQsMCwwLDAsMi40Ni43OEgzMjRhOS4xNSw5LjE1LDAsMCwxLDYuNDYsMi4zMyw3LjIsNy4yLDAsMCwxLDEuODksMi43LDkuMzIsOS4zMiwwLDAsMSwuNjEsMy40OWwwLC42YTkuMzQsOS4zNCwwLDAsMS0uNjIsMy40OCw3LjMzLDcuMzMsMCwwLDEtMS44OCwyLjcxQTkuMTMsOS4xMywwLDAsMSwzMjQsNDYzLjloLTkuNDZhNi4xNyw2LjE3LDAsMCwxLTIuNjEtLjUyLDUsNSwwLDAsMS0uOTUtLjU4LDMuODcsMy44NywwLDAsMS0uODQtLjkxLDUuMSw1LjEsMCwwLDEtLjU5LTEuMzEsNi4zLDYuMywwLDAsMS0uMjMtMS43OGgxNC45NGE0LjUxLDQuNTEsMCwwLDAsMS4xLS4yNSw0LjMxLDQuMzEsMCwwLDAsLjk1LS40OSwyLjY5LDIuNjksMCwwLDAsLjgyLS45MSwzLjc5LDMuNzksMCwwLDAsLjQtLjc3LDQuNDEsNC40MSwwLDAsMCwuMTgtLjc0LDMuODgsMy44OCwwLDAsMCwwLS42NywzLjQ5LDMuNDksMCwwLDAtLjA4LS42LDMuNCwzLjQsMCwwLDAtLjUxLTEuMjEsNC42Niw0LjY2LDAsMCwwLS43Ny0uODMsMy42NSwzLjY1LDAsMCwwLS40My0uMzEsMy4wNSwzLjA1LDAsMCwwLS41MS0uMjcsMy44MiwzLjgyLDAsMCwwLS42LS4xOSwzLjExLDMuMTEsMCwwLDAtLjY5LS4wN0gzMTcuMmE4Ljc1LDguNzUsMCwwLDEtNi4yMS0yLjIzLDcuNzIsNy43MiwwLDAsMS0yLjQxLTUuOTVsMC0uNThBNy43OCw3Ljc4LDAsMCwxLDMxMSw0MzYuOGE4Ljg1LDguODUsMCwwLDEsNi4yMS0yLjIzbDkuNzgsMGE1Ljg4LDUuODgsMCwwLDEsMi42MS40OCw1LjExLDUuMTEsMCwwLDEsMSwuNTksMy41MywzLjUzLDAsMCwxLC44My45Miw0LjcxLDQuNzEsMCwwLDEsLjU4LDEuMzQsNi42OCw2LjY4LDAsMCwxLC4yMiwxLjg0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI0MC43OSAtMTQ0LjI3KSIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTM1Myw0MzkuNzZoLTMuMzN2MTkuM2E2LjU2LDYuNTYsMCwwLDEtLjI0LDEuODgsNC45NCw0Ljk0LDAsMCwxLS42MSwxLjM3LDQsNCwwLDAsMS0uODguOTQsNC43NCw0Ljc0LDAsMCwxLTEsLjYsNi4zNSw2LjM1LDAsMCwxLTIuNzQuNDhWNDM5Ljc2aC0zYTcuMjksNy4yOSwwLDAsMS0yLjgxLS41OCw1LjgsNS44LDAsMCwxLTEtLjYxLDQsNCwwLDAsMS0uOS0uOTMsNC43Nyw0Ljc3LDAsMCwxLS42NC0xLjMyLDUuOTQsNS45NCwwLDAsMS0uMjQtMS43OGgyMi43MmE1Ljg5LDUuODksMCwwLDEtLjUzLDIuNjEsNC43NSw0Ljc1LDAsMCwxLS42LDEsMy44NiwzLjg2LDAsMCwxLS45NS44Myw1LjM5LDUuMzksMCwwLDEtMS4zNy41OUE2LjgzLDYuODMsMCwwLDEsMzUzLDQzOS43NloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNDAuNzkgLTE0NC4yNykiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0zNjcuMDYsNDU5YTUuNiw1LjYsMCwwLDEtLjI0LDEuNzMsNC42Miw0LjYyLDAsMCwxLS42MiwxLjI4LDMuNzMsMy43MywwLDAsMS0uODcuOSw0Ljk0LDQuOTQsMCwwLDEtMSwuNTksNi43NCw2Ljc0LDAsMCwxLTIuNzIuNTZWNDM0LjQ4aDIyLjUyYTYuMzQsNi4zNCwwLDAsMS0uMjQsMS44NSw0LjkyLDQuOTIsMCwwLDEtLjY2LDEuMzYsNC4xLDQuMSwwLDAsMS0uOTMuOTMsNS41Niw1LjU2LDAsMCwxLTEuMDYuNTgsNyw3LDAsMCwxLTIuODkuNDVIMzY3LjA2djYuNjZIMzc5YTYuNDgsNi40OCwwLDAsMS0uMjEsMS43NCw1LjI4LDUuMjgsMCwwLDEtLjU3LDEuMzEsNC4yNyw0LjI3LDAsMCwxLS44MS45Miw0LjY1LDQuNjUsMCwwLDEtLjkyLjYyLDYsNiwwLDAsMS0yLjUxLjZoLTYuODhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzk1LjgxLDQ1My4xM0gzOTIuOXY1LjIxYTkuMTksOS4xOSwwLDAsMS0uMjMsMi4yNCw2LjIzLDYuMjMsMCwwLDEtLjYxLDEuNjIsNC4yNiw0LjI2LDAsMCwxLS44NywxLjA5LDUsNSwwLDAsMS0xLC42Nyw1LjI0LDUuMjQsMCwwLDEtMi43MS40NVY0MzQuNTNoMTMuOTNhMTEuMzUsMTEuMzUsMCwwLDEsMy4zNy40NiwxMC44NiwxMC44NiwwLDAsMSwyLjY3LDEuMTksOS41NSw5LjU1LDAsMCwxLDIsMS42OCwxMS40NSwxMS40NSwwLDAsMSwxLjM5LDEuOTQsOC42OSw4LjY5LDAsMCwxLC44LDEuOTMsNi42NCw2LjY0LDAsMCwxLC4yNiwxLjY5LDExLjg1LDExLjg1LDAsMCwxLS4xNywyLDguMzYsOC4zNiwwLDAsMS0uNTMsMS43Niw4LjExLDguMTEsMCwwLDEtLjg3LDEuNTgsMTIuNjksMTIuNjksMCwwLDEtMS4yMywxLjQ2LDkuNDgsOS40OCwwLDAsMS00LjMzLDIuNDRsLS4wNywwTDQxMi41LDQ2NGgtNi43OGwtNS42NC04LjY3YTMuNjIsMy42MiwwLDAsMC0uODYtMS4xMWMtLjE3LS4xNC0uMzYtLjI3LS41Ny0uNDFhMy45MiwzLjkyLDAsMCwwLS43NC0uMzUsNS41Nyw1LjU3LDAsMCwwLS45NC0uMjVBNS45LDUuOSwwLDAsMCwzOTUuODEsNDUzLjEzWm0xMC42OS05LjcxYTMuMTMsMy4xMywwLDAsMC0uMS0uNzcsMi44NiwyLjg2LDAsMCwwLS4zNC0uODIsMy4zMiwzLjMyLDAsMCwwLS42NC0uNzksMy45NCwzLjk0LDAsMCwwLTEtLjY4LDYuNTgsNi41OCwwLDAsMC0xLjQ0LS40NywxMC4wNywxMC4wNywwLDAsMC0xLjk0LS4xN0gzOTIuOXY2LjE0YTIuNDEsMi40MSwwLDAsMCwuNDYuNzUsMy4wNiwzLjA2LDAsMCwwLC42NS41NCw0LjU0LDQuNTQsMCwwLDAsLjc3LjM3LDcuNjIsNy42MiwwLDAsMCwuODIuMjIsOC43Niw4Ljc2LDAsMCwwLDIsLjE2SDQwMWE2LjY3LDYuNjcsMCwwLDAsMi4zOC0uMzksNC44NCw0Ljg0LDAsMCwwLDEuNzQtMS4xYy4yMi0uMjMuNDItLjQ0LjU5LS42NWEzLjU4LDMuNTgsMCwwLDAsLjQyLS42NSwyLjY2LDIuNjYsMCwwLDAsLjI2LS43NUE0LjI4LDQuMjgsMCwwLDAsNDA2LjUsNDQzLjQyWiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI0MC43OSAtMTQ0LjI3KSIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTQyMi44Miw0NjRoLTUuNDZWNDM0YTYuMjgsNi4yOCwwLDAsMSwyLjc1LjUsNS4yNSw1LjI1LDAsMCwxLDEsLjYzLDQuMTgsNC4xOCwwLDAsMSwuODgsMSw1LjMsNS4zLDAsMCwxLC42MywxLjQ0LDcuMjUsNy4yNSwwLDAsMSwuMjMsMnYzLjI2YzAsLjgsMCwxLjcsMCwyLjY4djMuMDljMCwxLjA3LDAsMi4xNywwLDMuMjl2My4yOGMwLDEuMDcsMCwyLjEsMCwzLjA3djIuNjRjMCwuNzksMCwxLjQ1LDAsMloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNDAuNzkgLTE0NC4yNykiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik00NTMuMjksNDY0LjA2SDQzMC43N1Y0MzQuNDdoMjIuNTJhNiw2LDAsMCwxLS4yNSwxLjg1LDQuMjUsNC4yNSwwLDAsMS0uNjYsMS4zNSw0LDQsMCwwLDEtLjkzLjk0LDUuODIsNS44MiwwLDAsMS0xLjA2LjU4LDcsNywwLDAsMS0yLjg5LjQ1SDQzNi4yMXY2LjY1aDExLjkxYTYuNDYsNi40NiwwLDAsMS0uMjIsMS43NCw0LjYzLDQuNjMsMCwwLDEtLjU3LDEuMzEsNC4yNyw0LjI3LDAsMCwxLS44MS45Miw1LjA2LDUuMDYsMCwwLDEtLjkxLjYyLDYsNiwwLDAsMS0yLjUxLjZoLTYuODl2Ny40MWgxMmE2LjM4LDYuMzgsMCwwLDEsMS43My4yMiw0Ljg4LDQuODgsMCwwLDEsMS4yOC41OSwzLjc4LDMuNzgsMCwwLDEsLjkuODMsNC42OSw0LjY5LDAsMCwxLC42LDFBNi40Myw2LjQzLDAsMCwxLDQ1My4yOSw0NjQuMDZaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDY2LjE5LDQzOS43MWEzLjUsMy41LDAsMCwwLTEuMTYuMTEsNC41LDQuNSwwLDAsMC0uNTEuMTgsMi41OCwyLjU4LDAsMCwwLS41MS4yOCwyLjQzLDIuNDMsMCwwLDAtLjUuNDIsMywzLDAsMCwwLS40NS41OCwzLjM2LDMuMzYsMCwwLDAtLjQ4LDEuMzQsMy43NywzLjc3LDAsMCwwLC4wNiwxLjA5LDMuMDYsMy4wNiwwLDAsMCwuNDIsMSwyLjcyLDIuNzIsMCwwLDAsLjY4Ljc3LDMuNTYsMy41NiwwLDAsMCwxLC41MywzLjg0LDMuODQsMCwwLDAsMS40OS4yNWg2LjUzYTkuMTgsOS4xOCwwLDAsMSw2LjQ3LDIuMzMsNy4yOSw3LjI5LDAsMCwxLDEuODgsMi43LDkuMzIsOS4zMiwwLDAsMSwuNjIsMy40OWwwLC42YTkuMzQsOS4zNCwwLDAsMS0uNjEsMy40OCw3LjU4LDcuNTgsMCwwLDEtMS44OCwyLjcxLDkuMTcsOS4xNywwLDAsMS02LjQ1LDIuMzFoLTkuNDZhNi4xNiw2LjE2LDAsMCwxLTIuNi0uNTIsNS4xMSw1LjExLDAsMCwxLTEtLjU4LDMuODQsMy44NCwwLDAsMS0uODMtLjkxLDQuNzgsNC43OCwwLDAsMS0uNTktMS4zMSw2LjMsNi4zLDAsMCwxLS4yMy0xLjc4SDQ3M2E0LjcsNC43LDAsMCwwLDEuMTEtLjI1LDQuMjUsNC4yNSwwLDAsMCwuOTQtLjQ5LDIuNzIsMi43MiwwLDAsMCwuODMtLjkxLDMuNzIsMy43MiwwLDAsMCwuMzktLjc3LDMuNjEsMy42MSwwLDAsMCwuMTgtLjc0LDMuMTMsMy4xMywwLDAsMCwwLS42NywzLjQ5LDMuNDksMCwwLDAtLjA4LS42LDMuOCwzLjgsMCwwLDAtLjUxLTEuMjEsNC4zNyw0LjM3LDAsMCwwLS43OC0uODMsNC41Niw0LjU2LDAsMCwwLS40Mi0uMzEsNC4xMSw0LjExLDAsMCwwLS41MS0uMjcsMy42MywzLjYzLDAsMCwwLS42MS0uMTksMywzLDAsMCwwLS42OS0uMDdoLTYuOTNhOC43MSw4LjcxLDAsMCwxLTYuMjEtMi4yMyw3LjY4LDcuNjgsMCwwLDEtMi40MS01Ljk1bDAtLjU4YTcuNzgsNy43OCwwLDAsMSwyLjM5LTUuOTMsOC44MSw4LjgxLDAsMCwxLDYuMjEtMi4yM2w5Ljc4LDBhNS44Niw1Ljg2LDAsMCwxLDIuNi40OCw0Ljg3LDQuODcsMCwwLDEsMSwuNTksMy41MywzLjUzLDAsMCwxLC44My45Miw1LDUsMCwwLDEsLjU4LDEuMzQsNi42OCw2LjY4LDAsMCwxLC4yMiwxLjg0WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI0MC43OSAtMTQ0LjI3KSIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUwOS41Nyw0NjRINDg3LjIyVjQzNC40OGg1LjQydjI0LjM3aDExLjVhNyw3LDAsMCwxLDEuODguMjIsNS4wNiw1LjA2LDAsMCwxLDEuMzkuNTksNCw0LDAsMCwxLDEsLjgzLDQuODMsNC44MywwLDAsMSwuNjMuOTRBNS44NSw1Ljg1LDAsMCwxLDUwOS41Nyw0NjRaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTMzLjYxLDQ1OC42NmwtNy44LDBhNi4yOCw2LjI4LDAsMCwxLTIuNzMtLjQ4LDQuNjQsNC42NCwwLDAsMS0xLS41NywzLjY1LDMuNjUsMCwwLDEtLjg3LS45Miw0Ljc0LDQuNzQsMCwwLDEtLjYyLTEuMzIsNi41NSw2LjU1LDAsMCwxLS4yMy0xLjgyaDEzLjI4di02YTEwLjgzLDEwLjgzLDAsMCwwLS41NS0zLjU5LDcuODcsNy44NywwLDAsMC0xLjYzLTIuNzcsNy4xNyw3LjE3LDAsMCwwLTUuNDktMi4zOCw3LjYsNy42LDAsMCwwLTMsLjU5LDYuOTIsNi45MiwwLDAsMC0yLjQ1LDEuNzksOSw5LDAsMCwwLTIuMTksNi4zNlY0NjRoLTUuNVY0NDYuMzhhMTIuNjMsMTIuNjMsMCwwLDEsNy45LTExLjg0LDE1LjM3LDE1LjM3LDAsMCwxLDEwLjUzLDAsMTIuMDgsMTIuMDgsMCwwLDEsNC4xOSwyLjgxLDEyLjM2LDEyLjM2LDAsMCwxLDMuNzIsOVY0NjRoLTUuNTF2LTUuMzdaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNTY4LjQ2LDQzOS42OHYxNi45NWMwLC44OC4wNiwxLjY3LDAsMi4zNnMtLjA2LDEuMy0uMTIsMS44NGExMi41NCwxMi41NCwwLDAsMS0uMjIsMS4zOCw2LjI2LDYuMjYsMCwwLDEtLjI4LDEsMi41NCwyLjU0LDAsMCwxLS44NCwxLjI4bC0xNy41OS0xNy42NXYxNy40OWE0LjI2LDQuMjYsMCwwLDEtMi43OC0uMzEsNC4xNiw0LjE2LDAsMCwxLTEtLjc1LDQuOCw0LjgsMCwwLDEtLjg5LTEuMjksOC4yMSw4LjIxLDAsMCwxLS42My0yLDEzLjksMTMuOSwwLDAsMS0uMjQtMi43OHYtMTUuM2EzMC44NSwzMC44NSwwLDAsMSwuMTEtMy44MywxMi45MywxMi45MywwLDAsMSwuMTktMS40MSw4LjQ3LDguNDcsMCwwLDEsLjMxLTEuMjMsMi43NSwyLjc1LDAsMCwxLC40OC0uODcuODguODgsMCwwLDEsLjY4LS4zM2MuMTguMi40Ni40OC44Mi44NWwxLjI2LDEuMzEsMS42MSwxLjY3LDEuODYsMS45MywyLDIuMDksMi4wNiwyLjE0LDcuOTIsOC4yN3YtMTguM2E1LjcyLDUuNzIsMCwwLDEsMi42My40Nyw0LjYsNC42LDAsMCwxLDEsLjYyLDQsNCwwLDAsMSwuODUsMSw1LjA5LDUuMDksMCwwLDEsLjYsMS40M0E3LjU2LDcuNTYsMCwwLDEsNTY4LjQ2LDQzOS42OFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNDAuNzkgLTE0NC4yNykiLz48cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik01ODMuMiw0NTguOWg1LjI3YTEyLjIzLDEyLjIzLDAsMCwwLDUtMS4yNiw5LjcxLDkuNzEsMCwwLDAsMS44NC0xLjIxLDgsOCwwLDAsMCwxLjYxLTEuODMsOS42NSw5LjY1LDAsMCwwLDEuMTQtMi41NSwxMiwxMiwwLDAsMCwuNDMtMy40LDYuNTIsNi41MiwwLDAsMC0uMTctMS41NSw4LjM2LDguMzYsMCwwLDAtLjQ0LTEuMzksOC44NCw4Ljg0LDAsMCwwLS42Mi0xLjIzYy0uMjQtLjM3LS40OC0uNzItLjcyLTFhMTEuMTMsMTEuMTMsMCwwLDAtMS45NS0xLjkzLDExLDExLDAsMCwwLTEuNy0uOTQsMTIuNDcsMTIuNDcsMCwwLDAtMS45MS0uNjUsOS4zMiw5LjMyLDAsMCwwLTIuNDQtLjNoLTcuMzRsLS4wNiwyNC40MWgtNS40VjQzNC40N2gxMi40YTE4LjA1LDE4LjA1LDAsMCwxLDYuNDYsMS4wOSwxNC41MSwxNC41MSwwLDAsMSw5LjI3LDEzLjY2LDE0LDE0LDAsMCwxLTQuMjUsMTAuMzVBMTUuMzgsMTUuMzgsMCwwLDEsNTg4LjQ3LDQ2NGE1Ljc0LDUuNzQsMCwwLDEtMi42NC0uNDMsNC4zOSw0LjM5LDAsMCwxLTEtLjU4LDMuNCwzLjQsMCwwLDEtLjg0LS45Miw0LjczLDQuNzMsMCwwLDEtLjYtMS4zNEE2Ljg1LDYuODUsMCwwLDEsNTgzLjIsNDU4LjlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjQwLjc5IC0xNDQuMjcpIi8+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjE3Ny4zNSAyLjcxIDIzOS4yOCAwIDI3NS43NyA1MC4xMSAzMTYuNTEgOTYuODQgMzAwLjA4IDE1Ni42MiAyODguOTUgMjE3LjYgMjMxLjk2IDI0Mi4wMyAxNzcuMzUgMjcxLjM0IDEyMi43MyAyNDIuMDMgNjUuNzUgMjE3LjYgNTQuNjIgMTU2LjYyIDM4LjE5IDk2Ljg0IDc4LjkyIDUwLjExIDExNS40MiAwIDE3Ny4zNSAyLjcxIi8+PHBhdGggY2xhc3M9ImNscy0xIiBkPSJNMzU3LjgxLDIwNy4xOXM2LjU4LDcsNi41OCwxNC03LjQxLDEwLjI5LTUuNzYsMTYsMTUuMjIsMTguMSwxNS4yMiwxOC4xLDIuNDctMTguNTEsMi4wNi0yMy44Ni0uNDEtMTcuNjktLjQxLTE3LjY5LTEuNjUtOS40NywwLTEwLjI5LDguNjMsNi4xNyw4LjYzLDYuMTcsOC4yMy0yLjQ3LDExLjk0LTEuNjRhNzcuMzIsNzcuMzIsMCwwLDAsOC4yMywxLjIzbDEwLjI4LTUuMzVzLTEuNjQsMTEuMTEtMy4yOSwxMi43NmMwLDAsMi40NiwxMy4xNiwxLjY1LDE2LjQ1czMuNywxNy42OSw4LjIzLDE5Ljc1YzAsMC03LjQyLDguMjMtMS4yNCw3LjgyczQ0LTYuMTcsNjIuOTQsNS43NmMwLDAsMTEuOTQtMTYtNi41Ny0xNC40cy0xOC45My01LjM1LTE4LjkzLTUuMzUtMjkuMjIsNC4xMS0yOS4yMi0xOC4xLDIxLjQtMTkuMzQsMzIuOTItMTkuMzQsMjQuNjktOC42NCwyNC42OS04LjY0LDguMjIsMy4yOSwzLjcsMTAuMjktMTQuODEsOS40Ni0yOC4zOSw5LjQ2LTIxLjgsMS42NC0yMS4zOSw3LjgyLDExLjExLDksMjQuNjksNy44MiwyMS44LDAsMjcuNTYsNS4zNCwxOC45MywyNC4yOC0uODIsMzUuMzhjMCwwLTEuNjUsMTYuNDYuNDEsMTkuNzVzMTAuNywyLjg4LDEwLjcsMi44OHYyOC4zOXMtNS4zNS44Mi01Ljc2LDQuMTItMy43MSw5LjA1LTkuNDcsNS43Ni01LjM1LDEuMjQtMTEuNTIsMS42NC04LjY0LTkuNDYtNi4xNy0xMy41NywxMS4xMS0yLjg5LDE0LjQtMi40Nyw3LS40Miw2LjU4LTMuMjktLjgyLTkuODgtNC45NC05LjQ3LTEwLjI4LTEuNjQtMTQtNy44MS01Ljc2LTE0LjgxLTUuNzYtMTQuODEtMTUuMjIsNy0xMy41OCwxMS45MywzLjcsMTEuMSwzLjcsMTEuMS0xMi43NSw3LjQxLTE2LjQ1LDEyLjM1LTIuNDcsMTEuMS01LjM1LDExLjUyLTkuODgtNi4xOC0xNC00Ljk0LTYuNTksNy05Ljg4LDQuOTQtNS43NS02LjU4LTkuODctNy0yLjg4LTcuODEsMi4wNi0xMS41MSwxMS4xLjQsMTQuODEsMiwxMC43LTIsMTMuMTYtNC45NGEyOS43NSwyOS43NSwwLDAsMCwzLjcxLTUuMzRzLTExLjkzLTUuMzUtMTMuMTctNC4xMiwxMy4xNy0xMC43LDEzLjE3LTEwLjcsOS4wNS03LjgxLDExLjExLTkuODdjMCwwLTMuMjktMi40Ny0xMy4xNywxLjIzcy0xOS4zNCwxMy41OC0yMi42MywxNS42NC03LjQxLTIuODgtNy40MS0yLjg4YTM4LjI4LDM4LjI4LDAsMCwxLTkuODcsOS44OGMtNi4xNyw0LjExLTguMjIsOC42NC0xMi4zNCwxNC4zOXMtMTIuNzYsNy44Mi0xNS42NCwzLjctNi41OC0uODItOS44NywxLjY1LTkuMDUtMS4yMy02LjE2LTEwLjI5LDctNS43NiwxMy4xNi02LjU4LDE1LjYzLTMuNywxNS42My0xNi40NWMwLDAtNC45NC0uODMtMTAuMjgsMy4yOHMtMTIuMzUtNS43NS0xNi44Ny01LjM0UzM0MywyODkuOSwzNDMsMjg5LjlzMTcuNjktMTUuNjQsMTQuNC0xNC44MmE5LjE4LDkuMTgsMCwwLDEtNi4xNy0uODJMMzU3LDI2OC41cy0zLjctOS40Ny01LjM1LTE0LjgxLTEuMjQtMTQtNC45NC0xNS42NC00LjExLTQuMTEtLjgxLTguMjMuNC05LjQ2LDEuMjMtMTIuNzVTMzU1Ljc1LDIwNi4zNywzNTcuODEsMjA3LjE5WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI0MC43OSAtMTQ0LjI3KSIvPjwvc3ZnPg==") no-repeat bottom;
+            width: 100px;
+            left: 0;
+            position: absolute;
+            top: 0;
+        }
+
+
+        .main-title {
+            color: var(--primary2) !important;
+        }
+
+        .logo-header {
+            background: var(--primary);
+        }
+
+        .navbar-header {
+            background: var(--primary);
+        }
+
+        .bg-primary-gradient {
+            background: linear-gradient(-45deg, var(--secondary), var(--secondary2)) !important;
+        }
+
+        html {
+            background-color: var(--footer) !important;
+        }
+
+        .sf-toolbar-clearer {
+            background-color: var(--footer) !important;
+        }
+
+        .header {
+            height: auto;
+            background-color: var(--header);
+        }
+
+        .wrapper {
+            background: var(--background);
+        }
+
+        .background--primary {
+            background: var(--primary);
+            color: var(--primary-color) !important;
+
+        }
+
+        .background--secondary {
+            background: var(--secondary);
+            color: var(--secondary-color) !important;
+
+        }
+
+        .color--primary {
+            color: var(--primary-color) !important;
+
+        }
+
+        .modal__content {
+            color: var(--color) !important;
+        }
+
+        .color--secondary {
+            color: var(--secondary-color) !important;
+
+        }
+
+        @media (max-width: 544px) {
+            .col-xs-hidden {
+                display: block
+            }
+        }
+
+        @media (min-width: 544px) {
+            .col-xs-hidden {
+                display: none
+            }
+        }
+
+        @media (max-width: 544px) {
+            .col-xs {
+                display: none
+            }
+        }
+
+        @media (min-width: 544px) {
+            .col-xs {
+                display: block
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-md-hidden {
+                display: block
+            }
+        }
+
+        @media (min-width: 768px) {
+            .col-md-hidden {
+                display: none
+            }
+        }
+
+        @media (max-width: 768px) {
+            .col-md {
+                display: none
+            }
+        }
+
+        @media (min-width: 768px) {
+            .col-md {
+                display: block
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-hidden {
+                display: block
+            }
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-hidden {
+                display: none
+            }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg {
+                display: none
+            }
+        }
+
+        @media (min-width: 992px) {
+            .col-lg {
+                display: block
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .col-xl-hidden {
+                display: block
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .col-xl-hidden {
+                display: none
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .col-xl {
+                display: none
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .col-xl {
+                display: block
+            }
+        }
+
+        /* NL Design overwrites */
+        .footer {
+            background: var(--footer);
+            color: var(--footer-color) !important;
+        }
+
+        .footer a {
+            color: var(--footer-color) !important;
+        }
+
+        #docs-nav {
+            background: var(--menu);
+            color: var(--menu-color) !important;
+        }
+
+        .top-nav-autoresize .nav__link:hover {
+            background-color: var(--menu-over);
+        }
+
+        a:focus:not(.btn):not(.pagination__link):not(.nav__link) {
+            background: var(--menu-over);
+            outline: none;
+        }
+
+        .card__hover a:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            transform: scale(1.02);
+        }
+
+        .card__icon {
+            margin-top: 50px;
+        }
+
+        /* ignore centering on small screens */
+        @media only screen and (max-width: 550px) {
+            .card__icon {
+                margin-top: 0px;
+                margin-left: 15px;
+            }
+
+        }
+
+        .card__readmore {
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-bottom: 15px;
+            text-align: right;
+            color: var(--secondary);
+        }
+
+        .card__readmore :hover {
+            text-decoration: underline;
+        }
+
+        .background--image {
+            background-size: 100% auto !important;
+            background-position: center !important;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .noFocus:focus {
+            outline: none !important;
+        }
+
+
+        /*
+        .mobile-nav-collapse {
+            background: var(--menu);
+        }
+
+        .mobile-nav ul li {
+            color: var(--menu-color);
+        }
+        */
+
+
+        /* new button icons */
+        .btn--block {
+            width: 100%;
+        }
+
+        .btn--eherkenning {
+            margin-right: 50px !important;
+            margin-right: 5rem !important;
+            position: relative
+        }
+
+        .btn--eherkenning:before {
+            background-image: url("/images/eherkenning.svg");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            content: "";
+            height: 40px;
+            height: 4rem;
+            position: absolute;
+            right: -50px;
+            right: -5rem;
+            top: 4px;
+            top: .4rem;
+            width: 40px;
+            idth: 4rem
+        }
+
+        .btn--idin {
+            margin-right: 50px !important;
+            margin-right: 5rem !important;
+            position: relative
+        }
+
+        .btn--idin:before {
+            background-image: url("../images/idin.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            content: "";
+            height: 40px;
+            height: 4rem;
+            position: absolute;
+            right: -50px;
+            right: -5rem;
+            top: 4px;
+            top: .4rem;
+            width: 40px;
+            width: 4rem;
+
+        }
+
+        .btn--gmail {
+            margin-right: 50px !important;
+            margin-right: 5rem !important;
+            position: relative
+        }
+
+        .btn--gmail:before {
+            background-image: url("../images/gmail.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            content: "";
+            height: 40px;
+            height: 4rem;
+            position: absolute;
+            right: -50px;
+            right: -5rem;
+            top: 4px;
+            top: .4rem;
+            width: 40px;
+            width: 4rem;
+
+        }
+
+        .btn--eidas {
+            margin-right: 50px !important;
+            margin-right: 5rem !important;
+            position: relative
+        }
+
+        .btn--eidas:before {
+            background-image: url("../images/eidas.svg");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            content: "";
+            height: 40px;
+            height: 4rem;
+            position: absolute;
+            right: -50px;
+            right: -5rem;
+            top: 4px;
+            top: .4rem;
+            width: 40px;
+            idth: 4rem
+        }
+
+        .btn--facebook {
+            margin-right: 50px !important;
+            margin-right: 5rem !important;
+            position: relative
+        }
+
+        .btn--facebook:before {
+            background-image: url("../images/facebook.svg");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            content: "";
+            height: 40px;
+            height: 4rem;
+            position: absolute;
+            right: -50px;
+            right: -5rem;
+            top: 4px;
+            top: .4rem;
+            width: 40px;
+            idth: 4rem
+        }
+
+        /* user circle on mobile */
+        .user--circle {
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            padding: 8px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+
+            background: var(--primary-color);
+            color: var(--background);
+            text-align: center;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+
+        {% if application['defaultConfiguration']['configuration']['gemId'] is defined and application['defaultConfiguration']['configuration']['gemId'] is not empty %}
+
+        /* GEM WEBCHAT */
+
+        #webchat .rw-launcher, #webchat .rw-header, #webchat .rw-close-button, #webchat .rw-client {
+            background-color: var(--secondary) !important;
+        }
+
+        #webchat .rw-avatar {
+            background-color: var(--primary) !important;
+        }
+
+        #webchat .rw-header .rw-avatar {
+            background-color: var(--secondary) !important;
+        }
+
+        {% endif %}
+    </style>
+
+    {% if application['defaultConfiguration']['configuration']['stickyMenu'] is defined and application['defaultConfiguration']['configuration']['stickyMenu'] == true %}
+        <style>
+
+            /* Sticky docs-nav bar */
+
+            /* The sticky class is added to the header with JS when it reaches its scroll position */
+            .sticky-nav {
+                position: sticky;
+                top: 0px;
+                background: var(--menu) !important;
+                color: var(--menu-color) !important;
+                transition: 0.2s;
+                z-index: 1;
+            }
+
+            .sticky-transition {
+                transition: 0.5s;
+            }
+
+            .sticky-mobile-nav {
+                position: sticky;
+                top: 65px;
+                background: var(--menu) !important;
+                color: var(--menu-color) !important;
+                transition: 0.2s;
+                z-index: 1;
+            }
+
+            .sticky-mobile-transition {
+                transition: 0.5s;
+            }
+
+            .anchor {
+                margin-top: -70px;
+                position: absolute;
+            }
+
+
+            /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+            /*.sticky-nav + .content {*/
+            /*    padding-top: 102px;*/
+            /*}*/
+
+        </style>
+
+    {% endif %}
+
+
+
+
+    {% block style %}{% endblock %}
+
+</head>
+<body>
+
+<div class="wrapper">
+    <a class="skiplink" href="#content">
+        <span class="skiplink__text">{{ 'skip to content'|trans|capitalize }}</span>
+    </a>
+
+    {# lets be able to disable this #}
+    {% if application['defaultConfiguration']['configuration']['header'] is not defined or (application['defaultConfiguration']['configuration']['header'] is defined and application['defaultConfiguration']['configuration']['header'] == true) %}
+        {% include "header.html.twig" %}
+    {% endif %}
+
+    {% include "menu.html.twig" %}
+
+    <main class="skiplink-target main" id="content" tabindex="-1">
+
+        <div class="container flash">
+            <!-- the alert box -->
+            {% set flashes = [] %}
+            {% for label, messages in app.flashes() %}
+                {% for message in messages %}
+                    {% if message not in flashes %}
+                        {% set flashes = flashes|merge([message]) %}
+                        <div class="notification notification--{{ label }}">
+                            <div class="notification__content">
+                                <h2 class="notification__title">{{ message|trans|capitalize }}</h2>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+        {% block container %}
+
+        {% endblock %}
+    </main>
+
+    {% include 'login/widgets/login_modal.html.twig' %}
+    {% include "footer.html.twig" %}
+
+    <script src="/js/highlight.pack.js"></script>
+
+
+    {# Sticky menu script #}
+    {% if application['defaultConfiguration']['configuration']['stickyMenu'] is defined and application['defaultConfiguration']['configuration']['stickyMenu'] == true %}
+        <script>
+            // When the user scrolls the page, execute myFunction
+            window.onscroll = function () {
+                myFunction()
+            };
+
+            // Get the header
+            var header = document.getElementById("docs-nav");
+            // var stickyMobileNav = document.getElementById("stickyMobileNav");
+
+            // Get the offset position of the navbar
+            var sticky = header.offsetTop;
+
+            // var sticky = stickyMobileNav.offsetTop;
+
+            // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+            function myFunction() {
+                if (window.pageYOffset > sticky) {
+                    header.classList.remove("sticky-transition");
+                    header.classList.add("sticky-nav");
+
+                    // stickyMobileNav.classList.remove("sticky-mobile-transition");
+                    // stickyMobileNav.classList.add("sticky-mobile-nav");
+                } else {
+                    header.classList.add("sticky-transition");
+                    header.classList.remove("sticky-nav");
+
+                    // stickyMobileNav.classList.add("sticky-mobile-transition");
+                    // stickyMobileNav.classList.remove("sticky-mobile-nav");
+                }
+            }
+        </script>
+    {% endif %}
+
+    <script>
+        // Load collapse component
+        System['import']('/uno/components/collapse/collapse.js').then(function (m) {
+
+            //gebruikt unieke id van de nav om te voorkomen dat example collapses ook automatisch geactiveerd worden.
+            new m.Collapse(document.querySelector('#search-trigger'));
+        });
+        // Load nav component
+        System.import('/uno/components/navigation/navigation.js').then(function (module) {
+            var navs = document.querySelectorAll('.top-nav-autoresize');
+            // Initialize all navs
+            for (var i = 0; i < navs.length; i++) {
+                new module.AutoResizeNavigation(navs.item(i));
+            }
+            var submenus = document.querySelectorAll('.nav--submenu');
+            // Initialize all submenus
+            for (var i = 0; i < submenus.length; i++) {
+                new module.SubMenuNavigation(submenus.item(i));
+            }
+        });
+
+        var myModal;
+        // Load modal component
+        System.import('/uno/components/modal/modal.js').then(function (module) {
+            myModal = new module.Modal(document.getElementById('myModal'));
+        });
+
+        // Called when the user clicks the button
+        function openModal() {
+            myModal.open();
+        }
+    </script>
+
+    <script>
+        // Load tooltip component
+        System.import('/uno/components/tooltip/tooltip.js').then(function (module) {
+            // Select all tooltip elements on the page
+            var tooltips = document.querySelectorAll('.example [x-uno-tooltip]');
+
+            // Initialize all tooltips
+            for (var i = 0; i < tooltips.length; i++) {
+                new module.Tooltip(tooltips.item(i));
+            }
+        });
+    </script>
+
+    {% block script %}{% endblock %}
+</div>
+
+{% if application['defaultConfiguration']['configuration']['hubspotId'] is defined and application['defaultConfiguration']['configuration']['hubspotId'] is not empty %}
+    <!-- Start of HubSpot Embed Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer
+            src="//js.hs-scripts.com/{{ application['defaultConfiguration']['configuration']['hubspotId'] }}.js"></script>
+    <!-- End of HubSpot Embed Code -->
+
+    {% elseif application['defaultConfiguration']['configuration']['gemId'] is defined and application['defaultConfiguration']['configuration']['gemId'] is not empty %}
+    <!-- GEM  -->
+    <div id="webchat"></div>
+    <!-- Basis script voor het widget -->
+    <script src="https://www.develop.virtuele-gemeente-assistent.nl/static/js/webchat-v0.11.7.js"></script>
+    <!--- Custom widget script -->
+    <script id="widget-script" src="https://www.develop.virtuele-gemeente-assistent.nl/static/js/widget-v0.11.7.js"
+            data-municipality="{{ application['defaultConfiguration']['configuration']['gemId'] }}"></script>
+{% endif %}
+
+</body>
+</html>
