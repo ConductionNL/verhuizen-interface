@@ -110,7 +110,7 @@ security:
 
 php:
   repository: docker.io/conduction/protocomponent-php
-  image: ghcr.io/conductionnl/begrafenisplanner-php
+  image: ghcr.io/conductionnl/verhuizen-interface-php
   tag: latest
   env: prod
   replicaCount: 2
@@ -132,7 +132,7 @@ redis:
 
 nginx:
   repository: docker.io/conduction/protocomponent-nginx
-  image: ghcr.io/conductionnl/begrafenisplanner-nginx
+  image: ghcr.io/conductionnl/verhuizen-interface-nginx
   tag: latest
   pullPolicy: Always
   replicaCount: 2
@@ -153,7 +153,7 @@ postgresql:
 
 ingress:
   enabled: false
-  hostname: begrafenisplanner.local
+  hostname: verhuizen-interface.local
   path: /
   annotations:
     # kubernetes.io/ingress.global-static-ip-name: chart-ip

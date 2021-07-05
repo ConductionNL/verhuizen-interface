@@ -1,8 +1,8 @@
 publiccodeYmlVersion: "0.2"
 
-name: begrafenisplanner
+name: verhuizen-interface
 applicationSuite: commonground
-url: "https://github.com/ConductionNL/begrafenisplanner"
+url: "https://github.com/ConductionNL/verhuizen-interface"
 landingURL: "www.westfriesland.commonground.nu"
 isBasedOn: "https://github.com/ConductionNL/Proto-component-commonground.git"
 softwareVersion: "V1.0"
@@ -40,7 +40,7 @@ usedBy:
     - Gemeente Hoorn
 
 
-roadmap: "https://github.com/ConductionNL/begrafenisplanner/blob/master/ROADMAP.md"
+roadmap: "https://github.com/ConductionNL/verhuizen-interface/blob/master/ROADMAP.md"
 
 developmentStatus: development
 
@@ -69,7 +69,7 @@ description:
         #          on multiple rows. You should note what the software
         #          is and why one should need it.
 
-        documentation: "https://github.com/ConductionNL/begrafenisplanner/blob/master/README.md"
+        documentation: "https://github.com/ConductionNL/verhuizen-interface/blob/master/README.md"
         apiDocumentation: "www.westfriesland.commonground.nu"
 #
 #    features:
@@ -116,9 +116,9 @@ dependsOn:
     open:
         - name: Kubernetes
           versionMin: "1.15.5-do.1"
-        - name: begrafenisplanner/begrafenisplanner
+        - name: verhuizen-interface/verhuizen-interface
 
 installations:
     - type: helm
-      url: "https://raw.githubusercontent.com/ConductionNL/begrafenisplanner/master/api/helm/"
+      url: "https://raw.githubusercontent.com/ConductionNL/verhuizen-interface/master/api/helm/"
 
