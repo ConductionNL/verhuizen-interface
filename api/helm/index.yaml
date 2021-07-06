@@ -5,7 +5,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 11.10.0
-    created: "2021-07-06T20:04:05.3204566+02:00"
+    created: "2021-07-06T20:54:06.6610881+02:00"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -38,7 +38,7 @@ entries:
       category: Database
     apiVersion: v2
     appVersion: 6.0.11
-    created: "2021-07-06T20:04:05.3244567+02:00"
+    created: "2021-07-06T20:54:06.6650878+02:00"
     dependencies:
     - name: common
       repository: https://charts.bitnami.com/bitnami
@@ -70,7 +70,7 @@ entries:
       artifacthub.io/containsSecurityUpdates: "true"
     apiVersion: v2
     appVersion: V1.0
-    created: "2021-07-06T20:04:05.3174569+02:00"
+    created: "2021-07-06T20:54:06.6580882+02:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -81,7 +81,7 @@ entries:
       repository: https://charts.bitnami.com/bitnami
       version: 12.7.7
     description: De Proto Applicatie levert een vooringerichte versie van het Symfony PHP framework, waarbij de NL Design System componenten zijn voorzien van template widgets. Oftewel het is mogelijk om vanuit je PHP/HTML templates direct gebruik te maken van NL Design Elementen. De business logica van de Proto Applicatie wordt geleverd door de generieke Common Ground Bundle.
-    digest: d81f6b42d875c554b4e2467169f6759ef6390f57b00ed1936f7d91c0533f1e57
+    digest: 8caa7208393abd0d99f667aaf5a5c5442226a929ebf499d9417ab8a2771ffd48
     home: https://www.conduction.nl
     icon: https://conductionnl.github.io/images/conduction_avatar_blue_on_transparant.svg
     keywords:
@@ -101,4 +101,4 @@ entries:
     urls:
     - verhuizen-interface-1.0.0.tgz
     version: 1.0.0
-generated: "2021-07-06T20:04:05.3084863+02:00"
+generated: "2021-07-06T20:54:06.6490883+02:00"
