@@ -29,6 +29,7 @@ security:
             apikey: 45c1a4b6-59d3-4a6e-86bf-88a872f35845
             username: username
             password: password
+            accept: application/hal+json
         bc:
             auth: apikey
             location: betaalservice.local
